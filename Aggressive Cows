@@ -1,0 +1,49 @@
+// User function Template for C++
+
+class Solution {
+  public:
+    bool canWeTake(vector<int> &stalls , int mid , int k){
+        int cows = 1;
+        int distance = stalls[0];
+        
+        for(int i = 1 ; i < stalls.size() ; i++){
+            if(stalls[i] - distance >= mid){
+                cows++;
+                distance = stalls[i];
+            }
+        }
+        
+        if(cows >= k){
+            return true;
+        }
+        
+        return false;
+    }
+    int aggressiveCows(vector<int> &stalls, int k) {
+
+        // Write your code here
+        sort(stalls.begin() , stalls.end());
+        
+        int low = 0;
+        int high = stalls[stalls.size() - 1] - stalls[0];
+        
+        int minDistance = -1;
+        
+        while(low <= high){
+            int mid = (low + high) / 2;
+            
+            bool isValid = canWeTake(stalls , mid , k);
+            
+            if(isValid){
+                low = mid + 1;
+                minDistance = mid;
+            }
+            
+            else{
+                high = mid - 1;
+            }
+        }
+        
+        return minDistance;
+    }
+};
