@@ -1,0 +1,55 @@
+class Solution {
+  public:
+    bool canWeTake(vector<int> &arr , int mid , int k){
+        int totalPages = 0;
+        int students = 1;
+        
+        for(int i = 0 ; i < arr.size() ; i++){
+            if(totalPages + arr[i] > mid){
+                students++;
+                totalPages = arr[i];
+            }
+            
+            else{
+                totalPages += arr[i];
+            }
+        }
+        
+        
+        if(students <= k){
+            return true;
+        }
+        
+        return false;
+    }
+    int findPages(vector<int> &arr, int k) {
+        // code here
+        int maxi = *max_element(arr.begin() , arr.end());
+        int sum = accumulate(arr.begin() , arr.end() , 0);
+        
+        int ans = -1;
+        
+        int low = maxi;
+        int high = sum;
+        
+        if(k > arr.size()) return -1;
+        
+        while(low <= high){
+            int mid = (low + high) / 2;
+            
+            
+            bool isValid = canWeTake(arr , mid , k);
+            
+            if(isValid){
+                high = mid - 1;
+                ans = mid;
+            }
+            
+            else{
+                low = mid + 1;
+            }
+        }
+        
+        return low;
+    }
+};
